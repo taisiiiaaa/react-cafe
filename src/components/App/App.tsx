@@ -8,7 +8,6 @@ import Notification from "../Notification/Notification"
 
 export default function App() {
   const [votes, setVotes] = useState<Votes>({ good: 0, neutral: 0, bad: 0 })
-  const [canReset, setCanReset] = useState(false)
 
   const totalVotes = Object.values(votes).reduce((acc, vote) => acc + vote, 0)
 
@@ -17,14 +16,10 @@ export default function App() {
     : 0
 
   const handleVotes = (vote: VoteType) => {
-    setCanReset(true)
-
     setVotes((prevVotes) => ({ ...prevVotes, [vote]: prevVotes[vote] + 1 }))
   }
 
   const resetVotes = () => {
-    setCanReset(false)
-
     setVotes({ good: 0, neutral: 0, bad: 0 })
   }
 
@@ -34,7 +29,7 @@ export default function App() {
       <VoteOptions
         onVote={handleVotes}
         onReset={resetVotes}
-        canReset={canReset}
+        canReset={totalVotes > 0}
       />
       {totalVotes > 0 ? (
         <VoteStats
